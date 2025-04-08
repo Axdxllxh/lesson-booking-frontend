@@ -14,11 +14,13 @@
 <body>
   <div id="app">
     <h1>Lessons</h1>
+    
     <!-- Search input for filtering lessons -->
     <div>
       <input v-model="searchQuery" placeholder="Search lessons by subject or location..." />
     </div>
-    <!-- Sorting controls (if needed; still minimal styling) -->
+
+    <!-- Sorting controls -->
     <div>
       <label for="sortBy">Sort By:</label>
       <select id="sortBy" v-model="sortBy">
@@ -31,18 +33,22 @@
         {{ sortOrder === 'asc' ? 'Asc' : 'Desc' }}
       </button>
     </div>
-    <!-- Display the filtered and sorted lessons -->
+
+    <!-- Displaying lessons with full details -->
     <ul>
       <li v-for="lesson in sortedLessons" :key="lesson.id">
         <p><strong>{{ lesson.subject }}</strong></p>
         <p>Location: {{ lesson.location }}</p>
         <p>Price: ${{ lesson.price }}</p>
         <p>Quantity: {{ lesson.quantity }}</p>
-        <p>Rating: 
+        <p>
+          Rating:
           <span v-for="n in 5" :key="n">
             <i :class="n <= Math.round(lesson.rating) ? 'fas fa-star' : 'far fa-star'"></i>
           </span>
         </p>
+        <!-- Add to Cart button (disabled if no available quantity) -->
+        <button @click="addToCart(lesson)" :disabled="lesson.quantity === 0">Add to Cart</button>
       </li>
     </ul>
   </div>

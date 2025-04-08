@@ -1,17 +1,15 @@
 new Vue({
   el: '#app',
   data: {
-    // Lessons data is fetched from the back-end.
-    lessons: [],
-    // New search query field for filtering lessons.
+    lessons: [],         // Lessons are fetched from the back-end and now include subject, location, price, rating, and quantity.
     searchQuery: '',
-    // Sorting fields.
-    sortBy: 'subject',
-    sortOrder: 'asc'
+    sortBy: 'subject',   // Default sort field.
+    sortOrder: 'asc',    // Default sort order.
+    cart: []             // Introduced basic cart structure.
   },
   created: function() {
     var self = this;
-    // Fetch lessons from the back-end API. Expected objects include subject, location, price, quantity, and rating.
+    // Fetch lessons from the back-end API.
     fetch('http://localhost:3000/lessons')
       .then(function(response) {
         return response.json();
@@ -24,7 +22,7 @@ new Vue({
       });
   },
   computed: {
-    // Filter lessons based on the search query matching lesson subject or location.
+    // Filter lessons based on search query matching subject or location.
     filteredLessons: function() {
       var q = this.searchQuery.toLowerCase();
       return this.lessons.filter(function(lesson) {
@@ -51,6 +49,23 @@ new Vue({
     // Toggle sort order between ascending and descending.
     toggleSort: function() {
       this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    },
+    // Add a lesson to the cart and decrease the lesson's available quantity.
+    addToCart: function(lesson) {
+      const cartItem = this.cart.find(item => item.id === lesson.id);
+      if (cartItem) {
+        cartItem.qty++;
+      } else {
+        // Add lesson to cart with selected details and initial quantity of 1.
+        this.cart.push({
+          id: lesson.id,
+          subject: lesson.subject,
+          location: lesson.location,
+          price: lesson.price,
+          qty: 1
+        });
+      }
+      lesson.quantity--;
     }
   }
 });
