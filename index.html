@@ -9,15 +9,18 @@
 </head>
 <body>
   <div id="app">
-    <h1>Products</h1>
-    <!-- Render the subject (name) of each lesson -->
+    <h1>Lessons</h1>
     <ul>
+      
       <li v-for="lesson in lessons" :key="lesson.id">
-        {{ lesson.subject }}
+        <strong>{{ lesson.subject }}</strong><br>
+        Location: {{ lesson.location }}<br>
+        Price: ${{ lesson.price }}<br>
+        Quantity: {{ lesson.quantity }}<br>
+        Rating: {{ lesson.rating }}
       </li>
     </ul>
   </div>
-  <!-- Include main.js script -->
   <script src="main.js"></script>
 </body>
 </html>
