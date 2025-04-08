@@ -4,7 +4,7 @@ new Vue({
   el: '#app',
   data: {
     view: 'store',
-    lessons,
+    lessons,  
     cart: [],
     searchQuery: '',
     sortBy: 'subject',
@@ -53,28 +53,42 @@ new Vue({
       } else {
         this.cart.push({ ...lesson, qty: 1 });
       }
-      lesson.space--;
+      lesson.space--;  // decrease available quantity
     },
-    // Commit 8: Implement removeOne method (for removing items from cart)
     removeOne(item) {
-      // Decrement the quantity for the cart item
       item.qty--;
-      // Find the corresponding lesson in the lessons array and restore one space
       const lesson = this.lessons.find(l => l.id === item.id);
-      if (lesson) {
-        lesson.space++;
-      }
-      // If the item quantity is now 0, remove it from the cart
+      if (lesson) lesson.space++; // restore the available quantity
       if (item.qty === 0) {
         this.cart = this.cart.filter(i => i.id !== item.id);
       }
     },
     submitOrder() {
       if (this.isFormValid) {
-        alert(`Thanks ${this.form.name}, your order has been placed!`);
-        this.cart = [];
-        this.form = { name: '', phone: '' };
-        this.view = 'store';
+        // Build order object from form data and cart items.
+        const order = {
+          name: this.form.name,
+          phone: this.form.phone,
+          items: this.cart.map(item => ({ id: item.id, quantity: item.qty }))
+        };
+
+        // Send POST request to the back-end /order endpoint.
+        fetch('http://localhost:3000/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(order)
+        })
+          .then(response => response.json())
+          .then(data => {
+            alert(`Thanks ${this.form.name}, your order has been placed!`);
+            // Reset cart and form after a successful order submission.
+            this.cart = [];
+            this.form = { name: '', phone: '' };
+            this.view = 'store';
+          })
+          .catch(error => {
+            console.error('Error placing order:', error);
+          });
       }
     }
   },

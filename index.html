@@ -4,13 +4,9 @@
   <meta charset="UTF-8">
   <title>Lesson Booking App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Link to CSS file -->
   <link rel="stylesheet" href="style.css">
-  <!-- Include Vue.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-  <!-- Include main.js as a module -->
   <script type="module" src="main.js" defer></script>
-  <!-- Include Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -40,7 +36,6 @@
         </button>
       </div>
     </header>
-
     <!-- Store View -->
     <main v-if="view === 'store'" class="scrollable-main">
       <div class="lesson" v-for="lesson in sortedLessons" :key="lesson.id">
@@ -54,8 +49,7 @@
         <button class="btn" @click="addToCart(lesson)" :disabled="lesson.space === 0">Add to Cart</button>
       </div>
     </main>
-
-    <!-- Cart View (Updated in Commit 8) -->
+    <!-- Cart View -->
     <div v-if="view === 'cart'" class="cart-page">
       <h2>Shopping Cart</h2>
       <div v-if="cart.length === 0">
@@ -65,7 +59,6 @@
       <div v-else>
         <div v-for="item in cart" :key="item.id" class="cart-item">
           <span>{{ item.subject }} — {{ item.location }} • ${{ item.price }} • Quantity: {{ item.qty }}</span>
-          <!-- Remove button calls the removeOne method -->
           <button @click="removeOne(item)">Remove</button>
         </div>
         <hr />
