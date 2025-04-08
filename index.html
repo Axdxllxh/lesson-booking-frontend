@@ -8,11 +8,17 @@
   <link rel="stylesheet" href="style.css">
   <!-- Include Vue.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+  <!-- Include Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <div id="app">
     <h1>Lessons</h1>
-    <!-- Sorting controls added -->
+    <!-- Search input for filtering lessons -->
+    <div>
+      <input v-model="searchQuery" placeholder="Search lessons by subject or location..." />
+    </div>
+    <!-- Sorting controls (if needed; still minimal styling) -->
     <div>
       <label for="sortBy">Sort By:</label>
       <select id="sortBy" v-model="sortBy">
@@ -25,14 +31,18 @@
         {{ sortOrder === 'asc' ? 'Asc' : 'Desc' }}
       </button>
     </div>
-    <!-- Use sortedLessons computed property for rendering -->
+    <!-- Display the filtered and sorted lessons -->
     <ul>
       <li v-for="lesson in sortedLessons" :key="lesson.id">
-        <strong>{{ lesson.subject }}</strong><br>
-        Location: {{ lesson.location }}<br>
-        Price: ${{ lesson.price }}<br>
-        Quantity: {{ lesson.quantity }}<br>
-        Rating: {{ lesson.rating }}
+        <p><strong>{{ lesson.subject }}</strong></p>
+        <p>Location: {{ lesson.location }}</p>
+        <p>Price: ${{ lesson.price }}</p>
+        <p>Quantity: {{ lesson.quantity }}</p>
+        <p>Rating: 
+          <span v-for="n in 5" :key="n">
+            <i :class="n <= Math.round(lesson.rating) ? 'fas fa-star' : 'far fa-star'"></i>
+          </span>
+        </p>
       </li>
     </ul>
   </div>
