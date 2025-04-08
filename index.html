@@ -4,23 +4,32 @@
   <meta charset="UTF-8">
   <title>Lesson Booking App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Link to CSS file -->
+  <link rel="stylesheet" href="style.css">
   <!-- Include Vue.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+  <!-- Include Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <div id="app">
     <h1>Lessons</h1>
     <ul>
-      
+      <!-- Each lesson is now rendered with a more structured markup -->
       <li v-for="lesson in lessons" :key="lesson.id">
-        <strong>{{ lesson.subject }}</strong><br>
-        Location: {{ lesson.location }}<br>
-        Price: ${{ lesson.price }}<br>
-        Quantity: {{ lesson.quantity }}<br>
-        Rating: {{ lesson.rating }}
+        <p><strong>{{ lesson.subject }}</strong></p>
+        <p>Location: {{ lesson.location }}</p>
+        <p>Price: ${{ lesson.price }}</p>
+        <p>Quantity: {{ lesson.quantity }}</p>
+        <p>Rating:
+          <span v-for="n in 5" :key="n">
+            <i :class="n <= Math.round(lesson.rating) ? 'fas fa-star' : 'far fa-star'"></i>
+          </span>
+        </p>
       </li>
     </ul>
   </div>
   <script src="main.js"></script>
 </body>
 </html>
+
