@@ -4,63 +4,81 @@
   <meta charset="UTF-8">
   <title>Lesson Booking App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Link to external stylesheet -->
   <link rel="stylesheet" href="style.css">
+  <!-- Include Vue.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-  
-  <script src="main.js" defer></script>
+  <!-- Include Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+  <!-- Vue App Container -->
   <div id="app">
-    <header class="header-bar">
-      <div class="title">Lesson Booking App</div>
-      <div class="filters">
-        <input v-model="searchQuery" placeholder="Search lessons..." class="search-bar" />
-        <div class="filter-group">
-          <label for="sortBy">Sort by:</label>
-          <select id="sortBy" v-model="sortBy">
-            <option disabled value="">Choose...</option>
-            <option value="subject">Subject</option>
-            <option value="location">Location</option>
-            <option value="price">Price</option>
-            <option value="space">Spaces</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label for="sortOrder">Order:</label>
-          <button id="sortOrder" @click="toggleSort">
-            {{ sortOrder === 'asc' ? 'Ascending ↑' : 'Descending ↓' }}
+    <!-- Landing Page (initial view) -->
+    <div v-if="view === 'landing'" class="landing-page">
+      <h1>Welcome to the Lesson Booking App!</h1>
+      <p>Your one-stop shop for booking lessons.</p>
+      <button class="btn" @click="continueToStore">Continue to Store</button>
+    </div>
+    
+    <!-- Store View -->
+    <div v-if="view === 'store'">
+      <header class="header-bar">
+        <div class="title">Lesson Booking App</div>
+        <div class="filters">
+          <input v-model="searchQuery" placeholder="Search lessons..." class="search-bar" />
+          <div class="filter-group">
+            <label for="sortBy">Sort by:</label>
+            <select id="sortBy" v-model="sortBy">
+              <option disabled value="">Choose...</option>
+              <option value="subject">Subject</option>
+              <option value="location">Location</option>
+              <option value="price">Price</option>
+              <option value="quantity">Quantity</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="sortOrder">Order:</label>
+            <button id="sortOrder" @click="toggleSort">
+              {{ sortOrder === 'asc' ? 'Ascending ↑' : 'Descending ↓' }}
+            </button>
+          </div>
+          <button v-if="cart.length > 0" @click="view = 'cart'" class="cart-btn">
+            <i class="fas fa-shopping-cart"></i> ({{ cart.length }})
           </button>
         </div>
-        <button v-if="cart.length > 0" @click="view = 'cart'" class="cart-btn">
-          <i class="fas fa-shopping-cart"></i> ({{ cart.length }})
-        </button>
-      </div>
-    </header>
-    <!-- Store View -->
-    <main v-if="view === 'store'" class="scrollable-main">
-      <div class="lesson" v-for="lesson in sortedLessons" :key="lesson.id">
-        <h3>{{ lesson.subject }}</h3>
-        <p>Location: {{ lesson.location }}</p>
-        <p>Price: ${{ lesson.price }}</p>
-        <p>Spaces: {{ lesson.space }}</p>
-        <div class="rating">
-          <i v-for="n in 5" :key="n" :class="n <= Math.round(lesson.rating) ? 'fas fa-star' : 'far fa-star'"></i>
+      </header>
+      
+      <main class="scrollable-main">
+        <div class="lesson" v-for="lesson in sortedLessons" :key="lesson.id">
+          <img v-if="lesson.image" :src="lesson.image" alt="Lesson Image" class="lesson-image" />
+          <h3>{{ lesson.subject }}</h3>
+          <p>Location: {{ lesson.location }}</p>
+          <p>Price: ${{ lesson.price }}</p>
+          <p>Quantity: {{ lesson.quantity }}</p>
+          <div class="rating">
+            <i v-for="n in 5" :key="n" :class="n <= Math.round(lesson.rating) ? 'fas fa-star' : 'far fa-star'"></i>
+          </div>
+          <button class="btn" @click="addToCart(lesson)" :disabled="lesson.quantity === 0">
+            Add to Cart
+          </button>
         </div>
-        <button class="btn" @click="addToCart(lesson)" :disabled="lesson.space === 0">Add to Cart</button>
-      </div>
-    </main>
+      </main>
+    </div>
+    
     <!-- Cart View -->
     <div v-if="view === 'cart'" class="cart-page">
       <h2>Shopping Cart</h2>
       <div v-if="cart.length === 0">
         <p>Your cart is empty.</p>
-        <button @click="view = 'store'" class="btn">Back to Store</button>
+        <button class="btn" @click="view = 'store'">Back to Store</button>
       </div>
       <div v-else>
-        <div v-for="item in cart" :key="item.id" class="cart-item">
-          <span>{{ item.subject }} — {{ item.location }} • ${{ item.price }} • Quantity: {{ item.qty }}</span>
-          <button @click="removeOne(item)">Remove</button>
+        <div class="cart-item" v-for="item in cart" :key="item.id">
+          <span>
+            {{ item.subject }} — {{ item.location }} • ${{ item.price }} • Quantity: {{ item.qty }}
+          </span>
+          <button class="btn" @click="removeOne(item)">Remove</button>
         </div>
         <hr />
         <p><strong>Total: ${{ totalCost }}</strong></p>
@@ -72,10 +90,13 @@
           <label>Phone:</label>
           <input v-model="form.phone" required />
           <span v-if="phoneError" class="error">{{ phoneError }}</span>
-          <button type="submit" :disabled="!isFormValid">Checkout</button>
+          <button class="btn" type="submit" :disabled="!isFormValid">Checkout</button>
         </form>
       </div>
     </div>
   </div>
+  
+  <!-- Link to the main.js code -->
+  <script src="main.js" defer></script>
 </body>
 </html>
