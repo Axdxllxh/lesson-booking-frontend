@@ -16,34 +16,24 @@ new Vue({
   },
   created: function() {
     const self = this;
-    // Using Render backend URL instead of localhost
+    // ✅ Live backend URL on Render
     fetch('https://lesson-booking-backend-zlxp.onrender.com/lessons')
       .then(response => response.json())
       .then(data => {
         data.forEach(lesson => {
+          // ✅ Relative image paths for GitHub Pages
           switch (lesson.id) {
-            case 1:
-              lesson.image = "./images/Art.webp"; break;
-            case 2:
-              lesson.image = "./images/Chess.webp"; break;
-            case 3:
-              lesson.image = "./images/Cooking.webp"; break;
-            case 4:
-              lesson.image = "./images/Drama.webp"; break;
-            case 5:
-              lesson.image = "./images/Football.webp"; break;
-            case 6:
-              lesson.image = "./images/Math.webp"; break;
-            case 7:
-              lesson.image = "./images/Music.webp"; break;
-            case 8:
-              lesson.image = "./images/Programming.webp"; break;
-            case 9:
-              lesson.image = "./images/Science.webp"; break;
-            case 10:
-              lesson.image = "./images/Yoga.webp"; break;
-            default:
-              lesson.image = "";
+            case 1: lesson.image = "./images/Art.webp"; break;
+            case 2: lesson.image = "./images/Chess.webp"; break;
+            case 3: lesson.image = "./images/Cooking.webp"; break;
+            case 4: lesson.image = "./images/Drama.webp"; break;
+            case 5: lesson.image = "./images/Football.webp"; break;
+            case 6: lesson.image = "./images/Math.webp"; break;
+            case 7: lesson.image = "./images/Music.webp"; break;
+            case 8: lesson.image = "./images/Programming.webp"; break;
+            case 9: lesson.image = "./images/Science.webp"; break;
+            case 10: lesson.image = "./images/Yoga.webp"; break;
+            default: lesson.image = "";
           }
         });
         self.lessons = data;
