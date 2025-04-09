@@ -4,17 +4,14 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  /*landing background image for the whole site */
-  background-image: url("./images/landing-background.webp");
+  background-image: url("./images/Art.webp"); 
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  
   background-color: rgba(0, 0, 0, 0.4);
   background-blend-mode: multiply;
   color: white;
 }
-
 
 /* Landing Page Styles */
 .landing-page {
@@ -60,7 +57,7 @@ body {
 
 /* Header Styles */
 .header-bar {
-  background-color: rgba(13, 71, 161, 0.9); /* semi-transparent dark blue */
+  background-color: rgba(13, 71, 161, 0.9);
   color: white;
   padding: 15px;
   display: flex;
@@ -188,10 +185,7 @@ body {
 /* Cart Page Styles */
 .cart-page {
   padding: 2rem;
-  /* The cart page will also use the same body background via transparency */
-  
   background-color: rgba(0, 0, 0, 0.3);
-  /* Add a border or box-shadow if desired */
   max-width: 600px;
   margin: 2rem auto;
   border-radius: 8px;
